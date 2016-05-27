@@ -17,15 +17,11 @@ router.post('/', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-        	console.log("HERE IS THE MESSAGE ===>> ");
-            console.log(event);
-            console.log(event.message);
         	//do soemthing here
             var text = "Echo: "+event.message.text;
             helper.sendMessage(event.sender.id,text);
         }
     }
-    res.sendStatus(200);
 });
 
 
