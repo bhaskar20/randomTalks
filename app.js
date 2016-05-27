@@ -2,6 +2,8 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+// set env variables
+require('dotenv').config();
 
 var index = require('./routes/index');
 var messenger = require('./routes/webhook.js');
