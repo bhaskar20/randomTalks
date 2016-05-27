@@ -2,6 +2,7 @@ var request = require("request");
 var helper = {};
 
 helper.sendMessage = function(id,msg) {
+	console.log(id,msg);
 	request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},

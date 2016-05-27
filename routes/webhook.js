@@ -19,9 +19,10 @@ router.post('/', function (req, res) {
         if (event.message && event.message.text) {
         	console.log("HERE IS THE MESSAGE ===>> ");
             console.log(event);
-            console.log(events.message);
+            console.log(event.message);
         	//do soemthing here
-            helper.sendMessage(event.sender.id,"Echo: "+event.message.text);
+            var text = "Echo: "+event.message.text;
+            helper.sendMessage(event.sender.id,text);
         }
     }
     res.sendStatus(200);
