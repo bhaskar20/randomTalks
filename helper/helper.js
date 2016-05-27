@@ -1,7 +1,7 @@
 var request = require("request");
 var helper = {};
 
-helper.sendMessage = function(id,msg) {
+helper.sendMessage = function(id,msg,cb) {
 	console.log(id,msg);
 	console.log(process.env.PAGE_ACCESS_TOKEN);
 	request({
@@ -14,13 +14,17 @@ helper.sendMessage = function(id,msg) {
         }
     }, function(error, response, body) {
         if (error) {
-            console.log('Error sending message: ', error);
+            //console.log('Error sending message: ', error);
+            cb("err");
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+            //console.log('Error: ', response.body.error);
+            cb("err");
         } else {
-        	console.log("sent");
+        	//console.log("sent");
+        	cb()
         }
     });
+    return;
 }
 
 module.exports = helper;
