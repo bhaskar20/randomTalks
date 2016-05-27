@@ -1,3 +1,4 @@
+var request = require("request");
 var helper = {};
 
 helper.sendMessage = function(id,msg) {
