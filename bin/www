@@ -6,11 +6,11 @@ var fs = require('fs');
 var db = require('../db/db');
 
 var options = {
-    key: fs.readFileSync('cert/key.pem'),
-    cert: fs.readFileSync('cert/cert.pem')
+    key: fs.readFileSync('tls/key.pem'),
+    cert: fs.readFileSync('tls/cert.pem')
 };
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 var server = https.createServer(options, app);
