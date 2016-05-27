@@ -10,7 +10,7 @@ var options = {
     cert: fs.readFileSync('tls/cert.pem')
 };
 
-var port = normalizePort(process.env.PORT || '443');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 var server = https.createServer(options, app);
