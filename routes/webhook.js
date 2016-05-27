@@ -12,8 +12,14 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function (req, res) {
+    console.log("---------------------");
+    console.log(req.body);
+    console.log("---------------------");
+    console.log(req.body.entry);
+    console.log("---------------------");
     var events = req.body.entry[0].messaging;
     console.log(events);
+    console.log("=====================");
     var counter = events.length;
     var counterReq = 0;
     for (i = 0; i < events.length; i++) {
