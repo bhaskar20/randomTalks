@@ -27,7 +27,7 @@ router.post('/', function (req, res) {
                     console.log(err);
                 } else {
                     counterReq++;
-                    console.log(sent);
+                    console.log("sent");
                 }
                 if (counterReq == counter) {
                     res.status(200).send();
