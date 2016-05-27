@@ -3,13 +3,14 @@ var helper = {};
 
 helper.sendMessage = function(id,msg) {
 	console.log(id,msg);
+	console.log(process.env.PAGE_ACCESS_TOKEN);
 	request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: {"text" : msg}
+            message: { text : msg }
         }
     }, function(error, response, body) {
         if (error) {
