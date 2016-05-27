@@ -7,7 +7,8 @@ var db = require('../db/db');
 
 var options = {
     key: fs.readFileSync('tls/key.pem'),
-    cert: fs.readFileSync('tls/cert.pem')
+    cert: fs.readFileSync('tls/cert.pem'),
+    ca: fs.readFileSync('tls/chain.pem')
 };
 
 var port = normalizePort(process.env.PORT || '3000');
