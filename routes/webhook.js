@@ -20,18 +20,90 @@ router.post('/', function (req, res) {
             var event = events[i];
             if (event.message && event.message.text) {
             	//do soemthing here
-                var text = "Echo: "+event.message.text;
-                helper.sendMessage(event.sender.id,text,function(err){
+                helper.userStatus(event.sender.id, event, function(err, event, status) {
                     if (err) {
-                        console.log(err);
-                    } else {
-                        console.log("sent");
+                        console.log("ERR ====>> "+err.message);
+                        return;
                     }
-                });
+                    if (status == false) {
+                        //register the user and enter in a conv
+                        helper.saveUser(event.sender.id, event, function(err, event, docs){
+                            if (err) {
+                                console.log("ERR ====>> "+err.message)
+                                return;
+                            }
+                            helper.setupChat(event.sender.id, event, function(err, event, doc){
+                                if (err) {
+                                    console.log("ERR ====>> "+err.message);
+                                    return;
+                                }
+                                if (doc) {
+                                    helper.sendMessage(doc, "hi", function(err) {
+                                        if (err) {
+                                            console.log("ERR ====>> "+err.message);
+                                        }
+                                    });
+                                    helper.sendMessage(event.sender.id, "hi", function(err){
+                                       if (err) {
+                                            console.log("ERR ====>> "+err.message);
+                                        } 
+                                    });
+                                }
+                            });
+                        });
+                    } else if (status == "live"){
+                        // find partner and send the message
+                        if(event.sender.message != "@botbye") {
+                            var partner = helper.userConv[event.sender.id];
+                            var message = event.message.text;
+                            helper.sendMessage(partner, text, function(err){
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("sent");
+                                }
+                            });
+                        } else {
+                            helper.unsetChat(event.sender.id, event, function(err, event, doc){
+                                if (err) {
+                                    console.log("ERR ====>> "+err.message)
+                                }
+                                console.log("user left the chat "+doc+"--"+event.sender.id);
+                            });
+                        }
+                    } else {
+                        switch(event.message.text) {
+                            case "@botHi":
+                            case "@botHii":
+                            case "@bothii":
+                            case "@bothi":
+                            //do something, setup the chat
+                                helper.setupChat(event.sender.id, event, function(err, event, doc){
+                                    if (err) {
+                                        console.log("ERR ====>> "+err.message);
+                                        return;
+                                    }
+                                    if (doc) {
+                                        helper.sendMessage(doc, "hi", function(err) {
+                                            if (err) {
+                                                console.log("ERR ====>> "+err.message);
+                                            }
+                                        });
+                                        helper.sendMessage(event.sender.id, "hi", function(err){
+                                           if (err) {
+                                                console.log("ERR ====>> "+err.message);
+                                            } 
+                                        });
+                                    }
+                                });
+                                break;
+                        }
+                    }
+                })
             }
         }
-        res.status(200).send();
     }
+    res.status(200).send();
 });
 
 

@@ -27,11 +27,3 @@ exports.close = function(done) {
     })
   }
 };
-
-exports.create = function(name, done) {
-  if (state.db) {
-    state.db.createCollection(name,{});
-  } else {
-    console.log("no db")
-  }
-}
