@@ -116,9 +116,10 @@ helper.userStatus = function(id, e, cb){
         }
         if (docs.length == 0) {
             cb(null, e, false);
+        } else {
+            var status = docs[0].status;
+            cb(null, e, status);
         }
-        var status = docs[0].status;
-        cb(null, e, status);
     })
 }
 
