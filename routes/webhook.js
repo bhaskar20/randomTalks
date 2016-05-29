@@ -65,9 +65,10 @@ router.post('/', function (req, res) {
                         if(event.sender.message != "@botbye") {
                             var partner = helper.userConv[event.sender.id];
                             var message = event.message.text;
+                            console.log(partner+" "+event.sender.id);
                             helper.sendMessage(partner, message, function(err){
                                 if (err) {
-                                    console.log(err);
+                                    console.log(err.message);
                                 } else {
                                     console.log(" message sent");
                                 }
