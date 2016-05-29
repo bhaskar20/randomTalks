@@ -106,7 +106,14 @@ user = {
     status = live/waiting,    
 }
 */
-
+helper.log = function(){
+    var users = db.get().collection("users");
+    users.find().toArray(function(err, docs){
+        console.log(docs);
+        console.log(userQ);
+        console.log(userConv);
+    })
+}
 helper.userStatus = function(id, e, cb){
     var users = db.get().collection("users");
     users.find({uid:id}).toArray(function(err, docs){

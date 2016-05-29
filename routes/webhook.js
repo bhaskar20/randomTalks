@@ -26,6 +26,7 @@ router.post('/', function (req, res) {
                         return;
                     }
                     if (status == false) {
+                        helper.log();
                         console.log("new user");
                         //register the user and enter in a conv
                         helper.saveUser(event.sender.id, event, function(err, event, docs){
@@ -41,7 +42,9 @@ router.post('/', function (req, res) {
                                 }
                                 console.log("setup done");
                                 if (doc) {
+                                    console.log(doc);
                                     console.log("partner found");
+                                    helper.log();
                                     helper.sendMessage(doc, "hi", function(err) {
                                         if (err) {
                                             console.log("ERR ====>> "+err.message);
@@ -91,6 +94,7 @@ router.post('/', function (req, res) {
                                         return;
                                     }
                                     console.log("waiting user setup done");
+                                    helper.log();
                                     if (doc) {
                                         helper.sendMessage(doc, "hi", function(err) {
                                             if (err) {
