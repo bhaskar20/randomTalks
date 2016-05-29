@@ -62,7 +62,7 @@ router.post('/', function (req, res) {
                     } else if (status == "live"){
                         console.log("user already in conv");
                         // find partner and send the message
-                        if(event.sender.message != "@botbye") {
+                        if(event.sender.message != "#bye") {
                             var partner = helper.userConv[event.sender.id];
                             var message = event.message.text;
                             console.log(partner+" "+event.sender.id);
@@ -83,10 +83,7 @@ router.post('/', function (req, res) {
                         }
                     } else {
                         switch(event.message.text) {
-                            case "@botHi":
-                            case "@botHii":
-                            case "@bothii":
-                            case "@bothi":
+                            case "#Hi":
                             console.log("waiting user");
                             //do something, setup the chat
                                 helper.setupChat(event.sender.id, event, function(err, event, doc){

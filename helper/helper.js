@@ -61,6 +61,8 @@ helper.setupChat = function(id, e, cb){
 }
 helper.unsetChat = function(id, e, cb){
     var partner = userConv[id];
+    delete helper.userConv[partner];
+    delete helper.userConv[id];
     var users = db.get().collection("users");
     users.update({
         uid: 
