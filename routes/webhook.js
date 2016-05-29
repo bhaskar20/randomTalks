@@ -105,7 +105,7 @@ router.post('/', function (req, res) {
                                         });
                                     }
                                 });
-                                break;
+                                return;
                         }
                     }
                 })

@@ -28,33 +28,35 @@ helper.sendMessage = function(id, msg, cb) {
     return;
 }
 helper.setupChat = function(id, e, cb){
-    if (helper.conv.length > 0 ) {
-        var partner = helper.userQ.shift();
-        //add in conversation
-        userConv[partner] = id;
-        userConv[id] = partner;
-        var users = db.get().collection("users");
-        users.update({
-            uid: 
+    if (helper.userConv[0] != id ) {
+        if (helper.userConv.length > 0  ) {
+            var partner = helper.userQ.shift();
+            //add in conversation
+            userConv[partner] = id;
+            userConv[id] = partner;
+            var users = db.get().collection("users");
+            users.update({
+                uid: 
+                    {
+                        $in :[id, partner]
+                    }
+                },{
+                    $set : {
+                        status : "live"
+                    }    
+                },
                 {
-                    $in :[id, partner]
-                }
-            },{
-                $set : {
-                    status : "live"
-                }    
-            },
-            {
-                multi : true
-            }, function(err, docs){
-                if (err) {
-                    cb(err);
-                }
-                cb(null, e , partner);
-            })
-    } else {
-        helper.userQ.push(id);
-        cb(null, e, null);
+                    multi : true
+                }, function(err, docs){
+                    if (err) {
+                        cb(err);
+                    }
+                    cb(null, e , partner);
+                })
+        } else {
+            helper.userQ.push(id);
+            cb(null, e, null);
+        }
     }
 }
 helper.unsetChat = function(id, e, cb){
