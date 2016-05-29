@@ -28,8 +28,8 @@ helper.sendMessage = function(id, msg, cb) {
     return;
 }
 helper.setupChat = function(id, e, cb){
-    if (helper.userConv[0] != id ) {
-        if (helper.userConv.length > 0  ) {
+    if (helper.userQ[0] != id ) {
+        if (helper.userQ.length > 0) {
             var partner = helper.userQ.shift();
             //add in conversation
             userConv[partner] = id;
