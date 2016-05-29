@@ -110,8 +110,8 @@ helper.log = function(){
     var users = db.get().collection("users");
     users.find().toArray(function(err, docs){
         console.log(docs);
-        console.log(userQ);
-        console.log(userConv);
+        console.log(helper.userQ);
+        console.log(helper.userConv);
     })
 }
 helper.userStatus = function(id, e, cb){
