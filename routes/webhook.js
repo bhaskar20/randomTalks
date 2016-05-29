@@ -26,22 +26,27 @@ router.post('/', function (req, res) {
                         return;
                     }
                     if (status == false) {
+                        console.log("new user");
                         //register the user and enter in a conv
                         helper.saveUser(event.sender.id, event, function(err, event, docs){
                             if (err) {
                                 console.log("ERR ====>> "+err.message)
                                 return;
                             }
+                            console.log("user saved");
                             helper.setupChat(event.sender.id, event, function(err, event, doc){
                                 if (err) {
                                     console.log("ERR ====>> "+err.message);
                                     return;
                                 }
+                                console.log("setup done");
                                 if (doc) {
+                                    console.log("partner found");
                                     helper.sendMessage(doc, "hi", function(err) {
                                         if (err) {
                                             console.log("ERR ====>> "+err.message);
                                         }
+                                        console.log("hi sent");
                                     });
                                     helper.sendMessage(event.sender.id, "hi", function(err){
                                        if (err) {
@@ -52,6 +57,7 @@ router.post('/', function (req, res) {
                             });
                         });
                     } else if (status == "live"){
+                        console.log("user already in conv");
                         // find partner and send the message
                         if(event.sender.message != "@botbye") {
                             var partner = helper.userConv[event.sender.id];
@@ -60,7 +66,7 @@ router.post('/', function (req, res) {
                                 if (err) {
                                     console.log(err);
                                 } else {
-                                    console.log("sent");
+                                    console.log(" message sent");
                                 }
                             });
                         } else {
@@ -77,12 +83,14 @@ router.post('/', function (req, res) {
                             case "@botHii":
                             case "@bothii":
                             case "@bothi":
+                            console.log("waiting user");
                             //do something, setup the chat
                                 helper.setupChat(event.sender.id, event, function(err, event, doc){
                                     if (err) {
                                         console.log("ERR ====>> "+err.message);
                                         return;
                                     }
+                                    console.log("waiting user setup done");
                                     if (doc) {
                                         helper.sendMessage(doc, "hi", function(err) {
                                             if (err) {
@@ -92,7 +100,8 @@ router.post('/', function (req, res) {
                                         helper.sendMessage(event.sender.id, "hi", function(err){
                                            if (err) {
                                                 console.log("ERR ====>> "+err.message);
-                                            } 
+                                            }
+                                            console.log("waiting user chat hi"); 
                                         });
                                     }
                                 });

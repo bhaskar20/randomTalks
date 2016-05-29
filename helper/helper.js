@@ -86,7 +86,7 @@ helper.saveUser = function(id, e, cb){
     users.insert({
         uid:id,
         info:obj,
-        status:waiting
+        status:"waiting"
     }, function(err, docs){
         if (err) {
             cb(err);
