@@ -32,8 +32,8 @@ helper.setupChat = function(id, e, cb){
         if (helper.userQ.length > 0) {
             var partner = helper.userQ.shift();
             //add in conversation
-            userConv[partner] = id;
-            userConv[id] = partner;
+            helper.userConv[partner] = id;
+            helper.userConv[id] = partner;
             var users = db.get().collection("users");
             users.update({
                 uid: 
