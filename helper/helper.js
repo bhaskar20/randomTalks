@@ -60,7 +60,7 @@ helper.setupChat = function(id, e, cb){
     }
 }
 helper.unsetChat = function(id, e, cb){
-    var partner = userConv[id];
+    var partner = helper.userConv[id];
     delete helper.userConv[partner];
     delete helper.userConv[id];
     var users = db.get().collection("users");
