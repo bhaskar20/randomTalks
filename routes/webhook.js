@@ -14,8 +14,8 @@ router.get('/', function(req, res) {
 router.post('/', function (req, res) {
     for(j=0; j<req.body.entry.length; j++){
         var events = req.body.entry[j].messaging;
-        console.log(events);
-        console.log("=====================");
+        //console.log(events);
+        //console.log("=====================");
         for (i = 0; i < events.length; i++) {
             var event = events[i];
             if (event.message && event.message.text) {
@@ -26,7 +26,7 @@ router.post('/', function (req, res) {
                         return;
                     }
                     if (status == false) {
-                        helper.log();
+                        //helper.log();
                         console.log("new user");
                         //register the user and enter in a conv
                         helper.saveUser(event.sender.id, event, function(err, event, docs){
@@ -44,7 +44,7 @@ router.post('/', function (req, res) {
                                 if (doc) {
                                     console.log(doc);
                                     console.log("partner found");
-                                    helper.log();
+                                    //helper.log();
                                     helper.sendMessage(doc, "hi", function(err) {
                                         if (err) {
                                             console.log("ERR ====>> "+err.message);
@@ -60,7 +60,7 @@ router.post('/', function (req, res) {
                             });
                         });
                     } else if (status == "live"){
-                        console.log("user already in conv");
+                        console.log("user live");
                         // find partner and send the message
                         if(event.sender.message != "#bye") {
                             var partner = helper.userConv[event.sender.id];
@@ -80,10 +80,12 @@ router.post('/', function (req, res) {
                                 }
                                 console.log("user left the chat "+doc+"--"+event.sender.id);
                             });
+                            helper.log();
                         }
                     } else {
                         switch(event.message.text) {
                             case "#Hi":
+                            case "#hi":
                             console.log("waiting user");
                             //do something, setup the chat
                                 helper.setupChat(event.sender.id, event, function(err, event, doc){

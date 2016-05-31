@@ -98,16 +98,6 @@ helper.saveUser = function(id, e, cb){
         cb(null, e, docs[0]);
     });
 }
-/*
-user = {
-    uid = number,
-    info = {
-        age:number
-        etc
-    }
-    status = live/waiting,    
-}
-*/
 helper.log = function(){
     var users = db.get().collection("users");
     users.find().toArray(function(err, docs){
