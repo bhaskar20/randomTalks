@@ -27,7 +27,7 @@ router.post('/', function (req, res) {
                     }
                     if (status == false) {
                         //helper.log();
-                        console.log("new user");
+                        //console.log("new user");
                         //register the user and enter in a conv
                         helper.saveUser(event.sender.id, event, function(err, event, docs){
                             if (err) {
@@ -42,14 +42,14 @@ router.post('/', function (req, res) {
                                 }
                                 console.log("setup done");
                                 if (doc) {
-                                    console.log(doc);
-                                    console.log("partner found");
+                                    //console.log(doc);
+                                    //console.log("partner found");
                                     //helper.log();
                                     helper.sendMessage(doc, "hi", function(err) {
                                         if (err) {
                                             console.log("ERR ====>> "+err.message);
                                         }
-                                        console.log("hi sent");
+                                        //console.log("hi sent");
                                     });
                                     helper.sendMessage(event.sender.id, "hi", function(err){
                                        if (err) {
@@ -60,12 +60,12 @@ router.post('/', function (req, res) {
                             });
                         });
                     } else if (status == "live"){
-                        console.log("user live");
+                        //console.log("user live");
                         // find partner and send the message
-                        if(event.sender.message != "#bye") {
+                        if(event.message.text != "#bye" || event.message.text != "#Bye") {
                             var partner = helper.userConv[event.sender.id];
                             var message = event.message.text;
-                            console.log(partner+" "+event.sender.id);
+                            //console.log(partner+" "+event.sender.id);
                             helper.sendMessage(partner, message, function(err){
                                 if (err) {
                                     console.log(err.message);
@@ -86,7 +86,7 @@ router.post('/', function (req, res) {
                         switch(event.message.text) {
                             case "#Hi":
                             case "#hi":
-                            console.log("waiting user");
+                            //console.log("waiting user");
                             //do something, setup the chat
                                 helper.setupChat(event.sender.id, event, function(err, event, doc){
                                     if (err) {
