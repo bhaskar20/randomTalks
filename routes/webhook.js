@@ -62,7 +62,7 @@ router.post('/', function (req, res) {
                     } else if (status == "live"){
                         //console.log("user live");
                         // find partner and send the message
-                        if(event.message.text != "#bye" || event.message.text != "#Bye") {
+                        if (event.message.text != "#bye" && event.message.text != "#Bye") {
                             var partner = helper.userConv[event.sender.id];
                             var message = event.message.text;
                             //console.log(partner+" "+event.sender.id);
