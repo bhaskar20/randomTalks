@@ -72,7 +72,7 @@ helper.unsetChat = function(id, e, cb){
     var userConv = db.get().collection("userConv");
     var users = db.get().collection("users");
     
-    userConv.find({"p0":id}).toArray(function(err, doc){
+    userConv.find({"p0":id}).toArray(function(err, docs){
         if (err) {
             console.log("ERR ====>> "+err);
             cb(err,null,null);
