@@ -36,7 +36,12 @@ helper.setupChat = function(id, e, cb){
             //add in conversation
             //add in mongo userConv
             var userConv = db.get().collection("userConv");
-            userConv.insert({"p0":id,"p1":partner},{"p0":partner,"p1":id});
+            userConv.insert(
+                [
+                    {"p0":id,"p1":partner},
+                    {"p0":partner,"p1":id}
+                ]
+            );
             // helper.userConv[partner] = id;
             // helper.userConv[id] = partner;
             users.update({

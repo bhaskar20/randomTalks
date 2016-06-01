@@ -1,14 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var helper = require("../helper/helper.js");
+var db = require("../db/db");
 
 router.get('/', function(req, res) {
   if (req.query['hub.verify_token'] === "Random_talks_secured") {
     res.send(req.query['hub.challenge']);
-  } else {
-  	console.log("failed token verification");
-    res.send('Error, wrong validation token');    
-  }
+} else {
+ console.log("failed token verification");
+ res.send('Error, wrong validation token');    
+}
 });
 
 router.post('/', function (req, res) {
@@ -19,8 +20,8 @@ router.post('/', function (req, res) {
         for (i = 0; i < events.length; i++) {
             var event = events[i];
             if (event.message && event.message.text) {
-            	//do soemthing here
-                helper.userStatus(event.sender.id, event, function(err, event, status) {
+                //do soemthing here
+                helper.userStatus(event.sender.id, event, function(err, event, status){
                     if (err) {
                         console.log("ERR ====>> "+err.message);
                         return;
@@ -34,13 +35,13 @@ router.post('/', function (req, res) {
                                 console.log("ERR ====>> "+err.message)
                                 return;
                             }
-                            console.log("user saved");
+                            //console.log("user saved");
                             helper.setupChat(event.sender.id, event, function(err, event, doc){
                                 if (err) {
                                     console.log("ERR ====>> "+err.message);
                                     return;
                                 }
-                                console.log("setup done");
+                                //console.log("setup done");
                                 if (doc) {
                                     //console.log(doc);
                                     //console.log("partner found");
@@ -52,10 +53,10 @@ router.post('/', function (req, res) {
                                         //console.log("hi sent");
                                     });
                                     helper.sendMessage(event.sender.id, "hi", function(err){
-                                       if (err) {
+                                        if (err) {
                                             console.log("ERR ====>> "+err.message);
-                                        } 
-                                    });
+                                            } 
+                                        });
                                 }
                             });
                         });
@@ -63,15 +64,21 @@ router.post('/', function (req, res) {
                         //console.log("user live");
                         // find partner and send the message
                         if (event.message.text != "#bye" && event.message.text != "#Bye") {
-                            var partner = helper.userConv[event.sender.id];
+                            var userConv = db.get().collection("userConv");
                             var message = event.message.text;
                             //console.log(partner+" "+event.sender.id);
-                            helper.sendMessage(partner, message, function(err){
+                            userConv.find({"p0":event.sender.id}).toArray(function(err, docs){
                                 if (err) {
-                                    console.log(err.message);
-                                } else {
-                                    console.log(" message sent");
+                                    console.log("ERR ====>> "+err);
                                 }
+                                var partner = docs[0]["p1"];
+                                helper.sendMessage(partner, message, function(err){
+                                    if (err) {
+                                        console.log(err.message);
+                                    } else {
+                                        console.log(" message sent");
+                                    }
+                                });
                             });
                         } else {
                             helper.unsetChat(event.sender.id, event, function(err, event, doc){
@@ -80,16 +87,16 @@ router.post('/', function (req, res) {
                                 }
                                 console.log("user left the chat "+doc+"--"+event.sender.id);
                                 helper.sendMessage(event.sender.id, "B-Bye", function(err) {
-                                        if (err) {
-                                            console.log("ERR ====>> "+err.message);
-                                        }
+                                    if (err) {
+                                        console.log("ERR ====>> "+err.message);
+                                    }
                                         //console.log("hi sent");
                                     });
                                 helper.sendMessage(doc, "B-Bye", function(err){
-                                       if (err) {
-                                            console.log("ERR ====>> "+err.message);
-                                        } 
-                                    });
+                                    if (err) {
+                                        console.log("ERR ====>> "+err.message);
+                                    } 
+                                });
                             });
                             //helper.log();
                         }
@@ -99,28 +106,27 @@ router.post('/', function (req, res) {
                             case "#hi":
                             //console.log("waiting user");
                             //do something, setup the chat
-                                helper.setupChat(event.sender.id, event, function(err, event, doc){
-                                    if (err) {
-                                        console.log("ERR ====>> "+err.message);
-                                        return;
-                                    }
-                                    console.log("waiting user setup done");
-                                    helper.log();
-                                    if (doc) {
-                                        helper.sendMessage(doc, "hi", function(err) {
-                                            if (err) {
-                                                console.log("ERR ====>> "+err.message);
-                                            }
-                                        });
-                                        helper.sendMessage(event.sender.id, "hi", function(err){
-                                           if (err) {
-                                                console.log("ERR ====>> "+err.message);
-                                            }
-                                            console.log("waiting user chat hi"); 
-                                        });
-                                    }
-                                });
-                                return;
+                            helper.setupChat(event.sender.id, event, function(err, event, doc){
+                                if (err) {
+                                    console.log("ERR ====>> "+err.message);
+                                    return;
+                                }
+                                //console.log("waiting user setup done");
+                                //helper.log();
+                                if (doc) {
+                                    helper.sendMessage(doc, "hi", function(err) {
+                                        if (err) {
+                                            console.log("ERR ====>> "+err.message);
+                                        }
+                                    });
+                                    helper.sendMessage(event.sender.id, "hi", function(err){
+                                        if (err) {
+                                            console.log("ERR ====>> "+err.message);
+                                        }
+                                        console.log("waiting user chat hi"); 
+                                    });
+                                }
+                            });
                         }
                     }
                 })
