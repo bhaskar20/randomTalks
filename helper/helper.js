@@ -3,7 +3,8 @@ var db = require("../db/db");
 var helper = {};
 
 helper.userQ = [];
-helper.userConv = {};
+//helper.userConv = {};
+
 helper.sendMessage = function(id, msg, cb) {
 	request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -31,10 +32,13 @@ helper.setupChat = function(id, e, cb){
     if (helper.userQ[0] != id ) {
         if (helper.userQ.length > 0) {
             var partner = helper.userQ.shift();
-            //add in conversation
-            helper.userConv[partner] = id;
-            helper.userConv[id] = partner;
             var users = db.get().collection("users");
+            //add in conversation
+            //add in mongo userConv
+            var userConv = db.get().collection("userConv");
+            userConv.insert({"p0":id,"p1":partner},{"p0":partner,"p1":id});
+            // helper.userConv[partner] = id;
+            // helper.userConv[id] = partner;
             users.update({
                 uid: 
                     {
@@ -60,28 +64,39 @@ helper.setupChat = function(id, e, cb){
     }
 }
 helper.unsetChat = function(id, e, cb){
-    var partner = helper.userConv[id];
-    delete helper.userConv[partner];
-    delete helper.userConv[id];
+    var userConv = db.get().collection("userConv");
     var users = db.get().collection("users");
-    users.update({
+    
+    userConv.find({"p0":id}).toArray(function(err, doc){
+        if (err) {
+            console.log("ERR ====>> "+err);
+            cb(err,null,null);
+        }
+        var partner = docs[0]["p1"];
+        userConv.remove({'p0' :
+            { 
+                $in : [id, partner] 
+            } 
+        });
+        users.update({
         uid: 
             {
                 $in :[id, partner]
             }
-    },{
-        $set : {
-            status : "waiting"
+        },{
+            $set : {
+                status : "waiting"
         }    
-    },
-    {
-        multi : true
-    }, function(err, docs){
-        if (err) {
-            cb(err);
-        }
-        cb(null, e , partner);
-    });
+        },
+        {
+            multi : true
+        }, function(err, docs){
+            if (err) {
+                cb(err);
+            }
+            cb(null, e , partner);
+        });
+    })
 }
 helper.saveUser = function(id, e, cb){
     var users = db.get().collection("users");
@@ -101,9 +116,9 @@ helper.saveUser = function(id, e, cb){
 helper.log = function(){
     var users = db.get().collection("users");
     users.find().toArray(function(err, docs){
-        console.log(docs);
-        console.log(helper.userQ);
-        console.log(helper.userConv);
+        //console.log(docs);
+        //console.log(helper.userQ);
+        //console.log(helper.userConv);
     })
 }
 helper.userStatus = function(id, e, cb){

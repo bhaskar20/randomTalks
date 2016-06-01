@@ -79,8 +79,19 @@ router.post('/', function (req, res) {
                                     console.log("ERR ====>> "+err.message)
                                 }
                                 console.log("user left the chat "+doc+"--"+event.sender.id);
+                                helper.sendMessage(event.sender.id, "B-Bye", function(err) {
+                                        if (err) {
+                                            console.log("ERR ====>> "+err.message);
+                                        }
+                                        //console.log("hi sent");
+                                    });
+                                helper.sendMessage(doc, "B-Bye", function(err){
+                                       if (err) {
+                                            console.log("ERR ====>> "+err.message);
+                                        } 
+                                    });
                             });
-                            helper.log();
+                            //helper.log();
                         }
                     } else {
                         switch(event.message.text) {
