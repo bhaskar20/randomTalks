@@ -6,9 +6,9 @@ var fs = require('fs');
 var db = require('../db/db');
 
 var options = {
-    key: fs.readFileSync(require('homedir')() + '/letsencrypt/etc'+'/live/fbot.in-0001/key.pem'),
-    cert: fs.readFileSync(require('homedir')() + '/letsencrypt/etc'+'/live/fbot.in-0001/tls/cert.pem'),
-    ca: fs.readFileSync(require('homedir')() + '/letsencrypt/etc'+'/live/fbot.in-0001/chain.pem')
+    key: fs.readFileSync('tls/live/www.fbot.in/privkey.pem'),
+    cert: fs.readFileSync('tls/live/www.fbot.in/cert.pem'),
+    ca: fs.readFileSync(require('tls/live/www.fbot.in/chain.pem')
 };
 
 var port = normalizePort(process.env.PORT || '3000');
