@@ -4,11 +4,14 @@ var path = require('path');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.send({"message":"Sorry this is reserved for now"});
+	console.log('/');
+	res.send({"message":"Sorry this is reserved for now"});
 });
 
 router.get('/policy',function(req, res){
+	console.log("/plo");
 	var pa = path.join(__dirname+"/../public/views/policy.html");
+	console.log(pa);
 	res.sendFile(pa);
 });
 
