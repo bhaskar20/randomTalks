@@ -8,8 +8,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/policy',function(req, res){
-	var pa = path.join(__dirname+"../public/views/policy.html");
-	res.sendFile(pa);
+	res.sendFile(path.join(__dirname+"../public/views/policy.html"));
 });
 
 module.exports = router;
