@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require('path');
 
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', function(req, res){
 	console.log('/');
 	res.send({"message":"Sorry this is reserved for now"});
 });
